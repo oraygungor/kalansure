@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buluşmaya Kalan Süre ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff7e9f; /* Canlı pembe */
+            --secondary-color: #ffc0cb; /* Açık pembe */
+            --text-color: #5c2a39; /* Koyu gül rengi */
+            --bg-gradient-start: #fff0f5; /* Lavanta pembesi */
+            --bg-gradient-end: #ffe4e1; /* Deniz kabuğu pembesi */
+        }
+
+        /* Temel sayfa ayarları */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Sayfadan taşan kalpleri gizle */
+            cursor: pointer;
+        }
+
+        /* Geri sayım kutusunun stili */
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            user-select: none; /* Metin seçimini engelle */
+            transform: scale(0.95);
+            animation: fadeInContainer 1s ease-out forwards;
+        }
+
+        @keyframes fadeInContainer {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Başlık stili */
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: var(--text-color);
+            font-size: clamp(2rem, 5vw, 3rem); /* Farklı ekran boyutlarına uyumlu font boyutu */
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Zaman bloklarının kapsayıcısı */
+        #countdown {
+            display: flex;
+            justify-content: center;
+            gap: clamp(10px, 3vw, 20px); /* Esnek boşluk */
+            flex-wrap: wrap; /* Küçük ekranlarda alt satıra geç */
+        }
+
+        /* Her bir zaman bloğu (Gün, Saat vb.) */
+        .time-block {
+            background: var(--secondary-color);
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 90px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .time-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        /* Zaman rakamları */
+        .time-block span {
+            display: block;
+            font-size: clamp(2.5rem, 6vw, 3rem);
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* "Gün", "Saat" gibi etiketler */
+        .time-block .label {
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        /* Geri sayım bitince çıkan mesaj */
+        #message {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(2.5rem, 7vw, 3.5rem);
+            color: var(--primary-color);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: fadeInMessage 2s ease-in-out;
+        }
+
+        /* Tıklayınca çıkan kalp efekti */
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: var(--primary-color);
+            pointer-events: none; /* Kalplerin tıklanmasını engeller */
+            animation: heart-burst 1.5s ease-out forwards;
+            opacity: 0;
+            z-index: 999;
+        }
+
+        /* Kalp animasyonu */
+        @keyframes heart-burst {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                /* X ve Y değerleri JavaScript ile atanacak */
+                transform: translateY(var(--y-end)) translateX(var(--x-end)) scale(1.2);
+                opacity: 0;
+            }
+        }
+        
+        /* Mesajın belirme animasyonu */
+        @keyframes fadeInMessage {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="container">
+        <h1>Buluşmamıza Kalan Süre</h1>
+        <div id="countdown">
+            <div class="time-block">
+                <span id="days">00</span>
+                <div class="label">Gün</div>
+            </div>
+            <div class="time-block">
+                <span id="hours">00</span>
+                <div class="label">Saat</div>
+            </div>
+            <div class="time-block">
+                <span id="minutes">00</span>
+                <div class="label">Dakika</div>
+            </div>
+            <div class="time-block">
+                <span id="seconds">00</span>
+                <div class="label">Saniye</div>
+            </div>
+        </div>
+        <div id="message" style="display:none;">Vakit geldi! ❤️</div>
+    </div>
+
+    <script>
+        // Hedef tarih ve saat
+        const countDownDate = new Date("October 23, 2025 09:30:00").getTime();
+
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const countdownEl = document.getElementById('countdown');
+        const messageEl = document.getElementById('message');
+
+        const updateCountdown = () => {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            // Zaman dolduysa
+            if (distance < 0) {
+                clearInterval(interval);
+                countdownEl.style.display = 'none';
+                messageEl.style.display = 'block';
+                // Zaman dolunca konfeti gibi kalpler yağsın
+                for(let i = 0; i < 50; i++) {
+                    createHeart(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
+                }
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Değerleri 2 haneli göstermek için (örn: 09, 08)
+            daysEl.innerText = String(days).padStart(2, '0');
+            hoursEl.innerText = String(hours).padStart(2, '0');
+            minutesEl.innerText = String(minutes).padStart(2, '0');
+            secondsEl.innerText = String(seconds).padStart(2, '0');
+        };
+
+        // Geri sayımı her saniye güncelle
+        const interval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Sayfa ilk açıldığında da çalışsın
+
+        // Tıklama efekti
+        document.body.addEventListener('click', (e) => {
+            // Her tıklamada 5 adet kalp oluştur
+            for (let i = 0; i < 5; i++) {
+                createHeart(e.clientX, e.clientY);
+            }
+        });
+
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️'; // Kalp emojisi
+            
+            // Kalbin başlangıç pozisyonu
+            heart.style.left = `${x}px`;
+            heart.style.top = `${y}px`;
+            
+            // Animasyon için rastgele yönler
+            const xEnd = (Math.random() - 0.5) * 200; // -100px ile +100px arası
+            const yEnd = -150 - (Math.random() * 100); // -150px ile -250px arası (yukarı doğru)
+
+            heart.style.setProperty('--x-end', `${xEnd}px`);
+            heart.style.setProperty('--y-end', `${yEnd}px`);
+            
+            document.body.appendChild(heart);
+            
+            // Animasyon bittiğinde kalbi DOM'dan kaldır (performans için)
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+    </script>
+</body>
+</html>
+

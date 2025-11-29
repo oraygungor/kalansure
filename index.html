@@ -3,191 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İkinci buluşmaya Kalan Süre ❤️</title>
+    <title>Büyük Buluşmaya Kalan Süre ❤️</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <style>
         :root {
-            --primary-color: #ff7e9f; /* Canlı pembe */
-            --secondary-color: #ffc0cb; /* Açık pembe */
-            --text-color: #5c2a39; /* Koyu gül rengi */
-            --bg-gradient-start: #fff0f5; /* Lavanta pembesi */
-            --bg-gradient-end: #ffe4e1; /* Deniz kabuğu pembesi */
+            --primary: #ff4d6d;
+            --secondary: #ff8fa3;
+            --accent: #fff0f3;
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --text-dark: #590d22;
         }
 
-        /* Temel sayfa ayarları */
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            padding: 0;
+        }
+
+        body {
             height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Sayfadan taşan kalpleri gizle */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewport="0 0 24 24" style="fill:white;stroke:none;"><text y="20" font-size="20">❤️</text></svg>'), auto;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Arka plan süzülen kalpler */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.3);
+            animation: floatUp linear infinite;
+            z-index: 0;
+            user-select: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        /* Ana Konteyner - Glassmorphism */
+        .glass-card {
+            position: relative;
+            z-index: 10;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            border: 2px solid var(--glass-border);
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            max-width: 90%;
+            width: 600px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        /* Geri Sayım Kutucukları */
+        .countdown-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            border-radius: 16px;
+            min-width: 90px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             cursor: pointer;
         }
 
-        /* Geri sayım kutusunun stili */
-        .container {
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            user-select: none; /* Metin seçimini engelle */
-            transform: scale(0.95);
-            animation: fadeInContainer 1s ease-out forwards;
+        .time-box:hover {
+            transform: scale(1.1) rotate(-3deg);
+            background: #fff;
         }
 
-        @keyframes fadeInContainer {
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Başlık stili */
-        h1 {
-            font-family: 'Pacifico', cursive;
-            color: var(--text-color);
-            font-size: clamp(2rem, 5vw, 3rem); /* Farklı ekran boyutlarına uyumlu font boyutu */
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        /* Zaman bloklarının kapsayıcısı */
-        #countdown {
-            display: flex;
-            justify-content: center;
-            gap: clamp(10px, 3vw, 20px); /* Esnek boşluk */
-            flex-wrap: wrap; /* Küçük ekranlarda alt satıra geç */
-        }
-
-        /* Her bir zaman bloğu (Gün, Saat vb.) */
-        .time-block {
-            background: var(--secondary-color);
-            padding: 20px;
-            border-radius: 10px;
-            min-width: 90px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .time-block:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        /* Zaman rakamları */
-        .time-block span {
+        .time-box .number {
             display: block;
-            font-size: clamp(2.5rem, 6vw, 3rem);
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .time-box .label {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        /* Alt Metin ve Buton */
+        .sub-text {
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            color: white;
             font-weight: 600;
-            color: var(--text-color);
+            min-height: 1.5em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
-        /* "Gün", "Saat" gibi etiketler */
-        .time-block .label {
-            font-size: clamp(0.8rem, 2vw, 1rem);
-            color: var(--text-color);
-            opacity: 0.8;
-            margin-top: 5px;
-        }
-        
-        /* Geri sayım bitince çıkan mesaj */
-        #message {
-            font-family: 'Pacifico', cursive;
-            font-size: clamp(2.5rem, 7vw, 3.5rem);
-            color: var(--primary-color);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            animation: fadeInMessage 2s ease-in-out;
+        .love-btn {
+            margin-top: 2rem;
+            background: linear-gradient(45deg, #ff4d6d, #ff8fa3);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+            transition: all 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* Tıklayınca çıkan kalp efekti */
-        .heart {
+        .love-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6);
+        }
+
+        .love-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Mouse Trail Kalp Efekti */
+        .trail-heart {
             position: absolute;
-            font-size: 24px;
-            color: var(--primary-color);
-            pointer-events: none; /* Kalplerin tıklanmasını engeller */
-            animation: heart-burst 1.5s ease-out forwards;
-            opacity: 0;
-            z-index: 999;
+            font-size: 16px;
+            pointer-events: none;
+            animation: fadeTrail 1s ease-out forwards;
+            z-index: 100;
         }
 
-        /* Kalp animasyonu */
-        @keyframes heart-burst {
-            0% {
-                transform: translateY(0) scale(0.5);
-                opacity: 1;
-            }
-            100% {
-                /* X ve Y değerleri JavaScript ile atanacak */
-                transform: translateY(var(--y-end)) translateX(var(--x-end)) scale(1.2);
-                opacity: 0;
-            }
+        @keyframes fadeTrail {
+            0% { opacity: 1; transform: scale(1) translateY(0); }
+            100% { opacity: 0; transform: scale(0.5) translateY(-20px); }
         }
-        
-        /* Mesajın belirme animasyonu */
-        @keyframes fadeInMessage {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+
+        /* Mobil Düzenlemeler */
+        @media (max-width: 600px) {
+            .glass-card {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            .countdown-wrapper {
+                gap: 0.8rem;
+            }
+            .time-box {
+                min-width: 70px;
+                padding: 0.8rem 0.5rem;
+            }
+            .time-box .number {
+                font-size: 1.8rem;
+            }
+            .time-box .label {
+                font-size: 0.7rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="container">
-        <h1>Buluşmamıza Kalan Süre</h1>
-        <div id="countdown">
-            <div class="time-block">
-                <span id="days">00</span>
-                <div class="label">Gün</div>
+    <!-- Arka plan animasyon container'ı JS ile doldurulacak -->
+    <div id="bg-hearts-container"></div>
+
+    <div class="glass-card">
+        <h1>İkinci Buluşmaya Doğru...</h1>
+        
+        <div class="countdown-wrapper" id="countdown">
+            <div class="time-box">
+                <span class="number" id="days">00</span>
+                <span class="label">Gün</span>
             </div>
-            <div class="time-block">
-                <span id="hours">00</span>
-                <div class="label">Saat</div>
+            <div class="time-box">
+                <span class="number" id="hours">00</span>
+                <span class="label">Saat</span>
             </div>
-            <div class="time-block">
-                <span id="minutes">00</span>
-                <div class="label">Dakika</div>
+            <div class="time-box">
+                <span class="number" id="minutes">00</span>
+                <span class="label">Dakika</span>
             </div>
-            <div class="time-block">
-                <span id="seconds">00</span>
-                <div class="label">Saniye</div>
+            <div class="time-box">
+                <span class="number" id="seconds">00</span>
+                <span class="label">Saniye</span>
             </div>
         </div>
-        <div id="message" style="display:none;">Vakit geldi! ❤️</div>
+
+        <div class="sub-text" id="quote-display">
+            Zaman geçmek bilmiyor... ❤️
+        </div>
+
+        <button class="love-btn" onclick="sendLove()">
+            <span>❤️</span> Ona Sevgini Gönder
+        </button>
     </div>
 
     <script>
-        // Hedef tarih ve saat
-        const countDownDate = new Date("December 11, 2025 15:30:00").getTime();
+        // --- AYARLAR ---
+        // 11 Aralık 2025, Saat 15:30:00
+        const targetDate = new Date("December 11, 2025 15:30:00").getTime();
+        
+        const quotes = [
+            "Zaman geçmek bilmiyor... ❤️",
+            "Heyecan her saniye artıyor...",
+            "Sadece biraz daha sabır...",
+            "Mükemmel an için geri sayım...",
+            "Seninle zaman duruyor, sensiz geçmiyor."
+        ];
 
-        const daysEl = document.getElementById('days');
-        const hoursEl = document.getElementById('hours');
-        const minutesEl = document.getElementById('minutes');
-        const secondsEl = document.getElementById('seconds');
-        const countdownEl = document.getElementById('countdown');
-        const messageEl = document.getElementById('message');
+        // --- DOM ELEMENTLERİ ---
+        const els = {
+            d: document.getElementById('days'),
+            h: document.getElementById('hours'),
+            m: document.getElementById('minutes'),
+            s: document.getElementById('seconds'),
+            quote: document.getElementById('quote-display')
+        };
 
-        const updateCountdown = () => {
+        // --- GERİ SAYIM MANTIĞI ---
+        function updateCountdown() {
             const now = new Date().getTime();
-            const distance = countDownDate - now;
+            const distance = targetDate - now;
 
-            // Zaman dolduysa
             if (distance < 0) {
-                clearInterval(interval);
-                countdownEl.style.display = 'none';
-                messageEl.style.display = 'block';
-                // Zaman dolunca konfeti gibi kalpler yağsın
-                for(let i = 0; i < 50; i++) {
-                    createHeart(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
-                }
+                // Zaman dolduysa
+                document.querySelector('.countdown-wrapper').innerHTML = "<div style='font-size:2rem; color:var(--primary); font-weight:bold;'>Vakit Geldi! ❤️</div>";
+                document.querySelector('h1').innerText = "Kavuşma Zamanı!";
                 return;
             }
 
@@ -196,49 +284,118 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Değerleri 2 haneli göstermek için (örn: 09, 08)
-            daysEl.innerText = String(days).padStart(2, '0');
-            hoursEl.innerText = String(hours).padStart(2, '0');
-            minutesEl.innerText = String(minutes).padStart(2, '0');
-            secondsEl.innerText = String(seconds).padStart(2, '0');
-        };
+            els.d.innerText = days < 10 ? '0' + days : days;
+            els.h.innerText = hours < 10 ? '0' + hours : hours;
+            els.m.innerText = minutes < 10 ? '0' + minutes : minutes;
+            els.s.innerText = seconds < 10 ? '0' + seconds : seconds;
+        }
 
-        // Geri sayımı her saniye güncelle
-        const interval = setInterval(updateCountdown, 1000);
-        updateCountdown(); // Sayfa ilk açıldığında da çalışsın
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
-        // Tıklama efekti
-        document.body.addEventListener('click', (e) => {
-            // Her tıklamada 5 adet kalp oluştur
-            for (let i = 0; i < 5; i++) {
-                createHeart(e.clientX, e.clientY);
+        // --- SÖZLERİ DÖNDÜRME ---
+        let quoteIndex = 0;
+        setInterval(() => {
+            quoteIndex = (quoteIndex + 1) % quotes.length;
+            els.quote.style.opacity = 0;
+            setTimeout(() => {
+                els.quote.innerText = quotes[quoteIndex];
+                els.quote.style.opacity = 1;
+            }, 500); // Yarım saniye fade-out süresi
+        }, 4000); // 4 saniyede bir değiş
+
+        // --- ARKA PLAN EFEKTLERİ ---
+        function createBgHearts() {
+            const container = document.getElementById('bg-hearts-container');
+            const heartCount = 20; // Ekranda süzülecek kalp sayısı
+
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('bg-heart');
+                heart.innerHTML = ['❤️', '💖', '🤍', '🌸'][Math.floor(Math.random() * 4)];
+                
+                // Rastgele pozisyon ve animasyon süresi
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                heart.style.animationDelay = (Math.random() * 5) + 's';
+                
+                container.appendChild(heart);
             }
+        }
+        createBgHearts();
+
+        // --- MOUSE TRAIL (İMLECİ TAKİP EDEN KALPLER) ---
+        let lastTrailTime = 0;
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastTrailTime < 50) return; // Performans için sınırlama (50ms)
+            
+            lastTrailTime = now;
+            const heart = document.createElement('div');
+            heart.classList.add('trail-heart');
+            heart.innerHTML = '✨'; // Işıltı veya kalp
+            heart.style.left = (e.pageX + 10) + 'px';
+            heart.style.top = (e.pageY + 10) + 'px';
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 1000);
         });
 
-        function createHeart(x, y) {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️'; // Kalp emojisi
-            
-            // Kalbin başlangıç pozisyonu
-            heart.style.left = `${x}px`;
-            heart.style.top = `${y}px`;
-            
-            // Animasyon için rastgele yönler
-            const xEnd = (Math.random() - 0.5) * 200; // -100px ile +100px arası
-            const yEnd = -150 - (Math.random() * 100); // -150px ile -250px arası (yukarı doğru)
+        // --- KONFETİ VE SEVGİ BUTONU ---
+        function sendLove() {
+            // Buton animasyonu
+            const btn = document.querySelector('.love-btn');
+            btn.style.transform = "scale(0.95)";
+            setTimeout(() => btn.style.transform = "scale(1)", 100);
 
-            heart.style.setProperty('--x-end', `${xEnd}px`);
-            heart.style.setProperty('--y-end', `${yEnd}px`);
+            // Konfeti patlatma (canvas-confetti kütüphanesi)
+            const duration = 3000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff4d6d', '#ff8fa3', '#ffffff']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff4d6d', '#ff8fa3', '#ffffff']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // Ortaya büyük bir kalp çıkarıp kaybet
+            const bigHeart = document.createElement('div');
+            bigHeart.innerText = "💖";
+            bigHeart.style.position = "fixed";
+            bigHeart.style.left = "50%";
+            bigHeart.style.top = "50%";
+            bigHeart.style.transform = "translate(-50%, -50%) scale(0)";
+            bigHeart.style.fontSize = "10rem";
+            bigHeart.style.zIndex = "1000";
+            bigHeart.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
             
-            document.body.appendChild(heart);
+            document.body.appendChild(bigHeart);
             
-            // Animasyon bittiğinde kalbi DOM'dan kaldır (performans için)
-            heart.addEventListener('animationend', () => {
-                heart.remove();
+            requestAnimationFrame(() => {
+                bigHeart.style.transform = "translate(-50%, -50%) scale(1)";
+                setTimeout(() => {
+                    bigHeart.style.opacity = "0";
+                    bigHeart.style.transform = "translate(-50%, -50%) scale(2)";
+                    setTimeout(() => bigHeart.remove(), 500);
+                }, 800);
             });
         }
     </script>
 </body>
 </html>
-

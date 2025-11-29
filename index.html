@@ -3,221 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Büyük Buluşmaya Kalan Süre ❤️</title>
-    <!-- Google Fonts -->
+    <title>Üçüncü Buluşma ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- Confetti Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #ff4d6d;
-            --secondary: #ff8fa3;
-            --accent: #fff0f3;
-            --glass-bg: rgba(255, 255, 255, 0.25);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --text-dark: #590d22;
+            --primary: #d6336c; /* Canlı koyu pembe */
+            --light-pink: #fff0f3;
+            --soft-red: #ff8787;
+            --text-color: #630a28;
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* Metin seçimini engelle */
         }
 
         body {
             height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            font-family: 'Nunito', sans-serif;
-            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: radial-gradient(circle at center, #fff5f7 0%, #ffe3e3 100%);
+            font-family: 'Montserrat', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewport="0 0 24 24" style="fill:white;stroke:none;"><text y="20" font-size="20">❤️</text></svg>'), auto;
+            overflow: hidden;
             position: relative;
+            cursor: pointer; /* Tıklanabilir hissi vermek için */
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Arka plan süzülen kalpler */
-        .bg-heart {
+        /* Arka planda süzülen kalpler */
+        .floating-heart {
             position: absolute;
-            color: rgba(255, 255, 255, 0.3);
+            bottom: -50px;
+            font-size: 20px;
+            color: rgba(214, 51, 108, 0.2);
             animation: floatUp linear infinite;
             z-index: 0;
-            user-select: none;
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            50% { opacity: 0.6; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
         }
 
-        /* Ana Konteyner - Glassmorphism */
-        .glass-card {
-            position: relative;
+        /* Ana Kapsayıcı */
+        .container {
             z-index: 10;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 24px;
-            border: 2px solid var(--glass-border);
-            padding: 3rem;
             text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 3rem 4rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 50px rgba(214, 51, 108, 0.15);
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             max-width: 90%;
-            width: 600px;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
-        @keyframes slideUp {
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         h1 {
-            font-family: 'Great Vibes', cursive;
+            font-family: 'Dancing Script', cursive;
             font-size: 3.5rem;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            margin-bottom: 2rem;
-            line-height: 1.2;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
         }
 
-        /* Geri Sayım Kutucukları */
-        .countdown-wrapper {
+        .date-label {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin-bottom: 2.5rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Sayaç Kutuları */
+        .countdown-grid {
             display: flex;
-            justify-content: center;
             gap: 1.5rem;
+            justify-content: center;
             flex-wrap: wrap;
         }
 
         .time-box {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 1rem;
-            border-radius: 16px;
-            min-width: 90px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            cursor: pointer;
+            background: white;
+            padding: 1.2rem;
+            min-width: 100px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
+        /* İnteraktif Hover Efekti */
         .time-box:hover {
-            transform: scale(1.1) rotate(-3deg);
-            background: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(214, 51, 108, 0.2);
         }
 
-        .time-box .number {
+        .time-box::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: var(--primary);
+            opacity: 0.5;
+        }
+
+        .number {
             display: block;
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--primary);
-            font-variant-numeric: tabular-nums;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            line-height: 1.2;
         }
 
-        .time-box .label {
-            font-size: 0.9rem;
-            color: var(--text-dark);
+        .label {
+            font-size: 0.85rem;
+            color: #888;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-weight: 700;
+            margin-top: 5px;
         }
 
-        /* Alt Metin ve Buton */
-        .sub-text {
-            margin-top: 2rem;
-            font-size: 1.2rem;
-            color: white;
-            font-weight: 600;
-            min-height: 1.5em;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-
-        .love-btn {
-            margin-top: 2rem;
-            background: linear-gradient(45deg, #ff4d6d, #ff8fa3);
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
-            transition: all 0.3s ease;
-            font-family: 'Nunito', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .love-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6);
-        }
-
-        .love-btn:active {
-            transform: translateY(1px);
-        }
-
-        /* Mouse Trail Kalp Efekti */
-        .trail-heart {
+        /* Tıklama Efekti (Burst Heart) */
+        .burst-heart {
             position: absolute;
-            font-size: 16px;
             pointer-events: none;
-            animation: fadeTrail 1s ease-out forwards;
+            font-size: 24px;
+            animation: burstAnim 1s ease-out forwards;
             z-index: 100;
         }
 
-        @keyframes fadeTrail {
-            0% { opacity: 1; transform: scale(1) translateY(0); }
-            100% { opacity: 0; transform: scale(0.5) translateY(-20px); }
+        @keyframes burstAnim {
+            0% { transform: scale(0.5); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(var(--rot)); opacity: 0; }
         }
 
-        /* Mobil Düzenlemeler */
+        /* Mobil */
         @media (max-width: 600px) {
-            .glass-card {
-                padding: 1.5rem;
-            }
-            h1 {
-                font-size: 2.5rem;
-            }
-            .countdown-wrapper {
-                gap: 0.8rem;
-            }
-            .time-box {
-                min-width: 70px;
-                padding: 0.8rem 0.5rem;
-            }
-            .time-box .number {
-                font-size: 1.8rem;
-            }
-            .time-box .label {
-                font-size: 0.7rem;
-            }
+            .container { padding: 2rem 1.5rem; }
+            h1 { font-size: 2.5rem; }
+            .time-box { min-width: 75px; padding: 1rem 0.5rem; }
+            .number { font-size: 2rem; }
+            .label { font-size: 0.7rem; }
+        }
+        
+        .hint {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: var(--primary);
+            opacity: 0.6;
         }
     </style>
 </head>
 <body>
 
-    <!-- Arka plan animasyon container'ı JS ile doldurulacak -->
-    <div id="bg-hearts-container"></div>
+    <!-- Arka plan animasyonu için container -->
+    <div id="bg-animation"></div>
 
-    <div class="glass-card">
-        <h1>İkinci Buluşmaya Doğru...</h1>
-        
-        <div class="countdown-wrapper" id="countdown">
+    <div class="container">
+        <h1>Üçüncü Buluşma</h1>
+        <div class="date-label">11 Aralık 2025 • 15:30</div>
+
+        <div class="countdown-grid" id="countdown">
             <div class="time-box">
                 <span class="number" id="days">00</span>
                 <span class="label">Gün</span>
@@ -235,47 +195,21 @@
                 <span class="label">Saniye</span>
             </div>
         </div>
-
-        <div class="sub-text" id="quote-display">
-            Zaman geçmek bilmiyor... ❤️
-        </div>
-
-        <button class="love-btn" onclick="sendLove()">
-            <span>❤️</span> Ona Sevgini Gönder
-        </button>
+        
+        <div class="hint">(Ekrana tıklayarak sevgini gönder ❤️)</div>
     </div>
 
     <script>
-        // --- AYARLAR ---
-        // 11 Aralık 2025, Saat 15:30:00
+        // --- TARİH AYARI ---
         const targetDate = new Date("December 11, 2025 15:30:00").getTime();
-        
-        const quotes = [
-            "Zaman geçmek bilmiyor... ❤️",
-            "Heyecan her saniye artıyor...",
-            "Sadece biraz daha sabır...",
-            "Mükemmel an için geri sayım...",
-            "Seninle zaman duruyor, sensiz geçmiyor."
-        ];
 
-        // --- DOM ELEMENTLERİ ---
-        const els = {
-            d: document.getElementById('days'),
-            h: document.getElementById('hours'),
-            m: document.getElementById('minutes'),
-            s: document.getElementById('seconds'),
-            quote: document.getElementById('quote-display')
-        };
-
-        // --- GERİ SAYIM MANTIĞI ---
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = targetDate - now;
 
             if (distance < 0) {
-                // Zaman dolduysa
-                document.querySelector('.countdown-wrapper').innerHTML = "<div style='font-size:2rem; color:var(--primary); font-weight:bold;'>Vakit Geldi! ❤️</div>";
-                document.querySelector('h1').innerText = "Kavuşma Zamanı!";
+                document.getElementById('countdown').innerHTML = "<div style='font-size:2rem; color:#d6336c; font-weight:bold;'>Vakit Geldi! ❤️</div>";
+                document.querySelector('.date-label').innerText = "Kavuşma Anı";
                 return;
             }
 
@@ -284,118 +218,115 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            els.d.innerText = days < 10 ? '0' + days : days;
-            els.h.innerText = hours < 10 ? '0' + hours : hours;
-            els.m.innerText = minutes < 10 ? '0' + minutes : minutes;
-            els.s.innerText = seconds < 10 ? '0' + seconds : seconds;
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
         }
-
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- SÖZLERİ DÖNDÜRME ---
-        let quoteIndex = 0;
-        setInterval(() => {
-            quoteIndex = (quoteIndex + 1) % quotes.length;
-            els.quote.style.opacity = 0;
-            setTimeout(() => {
-                els.quote.innerText = quotes[quoteIndex];
-                els.quote.style.opacity = 1;
-            }, 500); // Yarım saniye fade-out süresi
-        }, 4000); // 4 saniyede bir değiş
-
-        // --- ARKA PLAN EFEKTLERİ ---
-        function createBgHearts() {
-            const container = document.getElementById('bg-hearts-container');
-            const heartCount = 20; // Ekranda süzülecek kalp sayısı
+        // --- ARKA PLAN (SÜZÜLEN KALPLER) ---
+        function createBackgroundHearts() {
+            const container = document.body;
+            const heartCount = 15; // Ekranda aynı anda olacak maksimum kalp
 
             for (let i = 0; i < heartCount; i++) {
-                const heart = document.createElement('div');
-                heart.classList.add('bg-heart');
-                heart.innerHTML = ['❤️', '💖', '🤍', '🌸'][Math.floor(Math.random() * 4)];
-                
-                // Rastgele pozisyon ve animasyon süresi
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                heart.style.animationDelay = (Math.random() * 5) + 's';
-                
-                container.appendChild(heart);
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('floating-heart');
+                    heart.innerHTML = ['❤️', '💖', '💗', '🤍'][Math.floor(Math.random() * 4)];
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 10 + 10) + 's'; // 10-20sn arası
+                    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                    container.appendChild(heart);
+
+                    // Animasyon bitince başa sarıp tekrar kullanmak yerine DOM'dan silip yenisini ekliyoruz
+                    // (Basit döngü için)
+                    heart.addEventListener('animationend', () => {
+                        heart.remove();
+                        createSingleBgHeart(); 
+                    });
+                }, i * 1000);
             }
         }
-        createBgHearts();
 
-        // --- MOUSE TRAIL (İMLECİ TAKİP EDEN KALPLER) ---
-        let lastTrailTime = 0;
-        document.addEventListener('mousemove', (e) => {
-            const now = Date.now();
-            if (now - lastTrailTime < 50) return; // Performans için sınırlama (50ms)
-            
-            lastTrailTime = now;
+        function createSingleBgHeart() {
             const heart = document.createElement('div');
-            heart.classList.add('trail-heart');
-            heart.innerHTML = '✨'; // Işıltı veya kalp
-            heart.style.left = (e.pageX + 10) + 'px';
-            heart.style.top = (e.pageY + 10) + 'px';
+            heart.classList.add('floating-heart');
+            heart.innerHTML = ['❤️', '💖', '💗', '🤍'][Math.floor(Math.random() * 4)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
             document.body.appendChild(heart);
-
-            setTimeout(() => heart.remove(), 1000);
-        });
-
-        // --- KONFETİ VE SEVGİ BUTONU ---
-        function sendLove() {
-            // Buton animasyonu
-            const btn = document.querySelector('.love-btn');
-            btn.style.transform = "scale(0.95)";
-            setTimeout(() => btn.style.transform = "scale(1)", 100);
-
-            // Konfeti patlatma (canvas-confetti kütüphanesi)
-            const duration = 3000;
-            const end = Date.now() + duration;
-
-            (function frame() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: ['#ff4d6d', '#ff8fa3', '#ffffff']
-                });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: ['#ff4d6d', '#ff8fa3', '#ffffff']
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            }());
-
-            // Ortaya büyük bir kalp çıkarıp kaybet
-            const bigHeart = document.createElement('div');
-            bigHeart.innerText = "💖";
-            bigHeart.style.position = "fixed";
-            bigHeart.style.left = "50%";
-            bigHeart.style.top = "50%";
-            bigHeart.style.transform = "translate(-50%, -50%) scale(0)";
-            bigHeart.style.fontSize = "10rem";
-            bigHeart.style.zIndex = "1000";
-            bigHeart.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-            
-            document.body.appendChild(bigHeart);
-            
-            requestAnimationFrame(() => {
-                bigHeart.style.transform = "translate(-50%, -50%) scale(1)";
-                setTimeout(() => {
-                    bigHeart.style.opacity = "0";
-                    bigHeart.style.transform = "translate(-50%, -50%) scale(2)";
-                    setTimeout(() => bigHeart.remove(), 500);
-                }, 800);
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+                createSingleBgHeart();
             });
         }
+        createBackgroundHearts();
+
+
+        // --- İNTERAKTİF (TIKLAMA) ---
+        document.addEventListener('click', (e) => {
+            // Tıklanan yerde kalpler patlasın
+            createBurst(e.clientX, e.clientY);
+        });
+
+        function createBurst(x, y) {
+            const count = 8; // Patlayan kalp sayısı
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('burst-heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = x + 'px';
+                heart.style.top = y + 'px';
+                
+                // Rastgele yönlere dağılım
+                const angle = Math.random() * 360;
+                const distance = Math.random() * 100 + 50;
+                const tx = Math.cos(angle * Math.PI / 180) * distance + 'px';
+                const ty = Math.sin(angle * Math.PI / 180) * distance + 'px';
+                const rot = Math.random() * 360 + 'deg';
+
+                heart.style.setProperty('--tx', tx);
+                heart.style.setProperty('--ty', ty);
+                heart.style.setProperty('--rot', rot);
+
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 1000);
+            }
+        }
+
+        // --- MOUSE HAREKET EFEKTİ (Hafif bir iz) ---
+        let lastMove = 0;
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastMove < 100) return; // Çok sık olmaması için sınırlama
+            lastMove = now;
+
+            const trail = document.createElement('div');
+            trail.style.position = 'absolute';
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
+            trail.style.pointerEvents = 'none';
+            trail.style.color = '#ff8787';
+            trail.style.fontSize = '12px';
+            trail.innerHTML = '✨';
+            trail.style.transition = 'all 0.8s ease-out';
+            trail.style.opacity = '1';
+            trail.style.transform = 'scale(1)';
+
+            document.body.appendChild(trail);
+
+            requestAnimationFrame(() => {
+                trail.style.transform = 'translateY(-20px) scale(0.5)';
+                trail.style.opacity = '0';
+            });
+
+            setTimeout(() => trail.remove(), 800);
+        });
+
     </script>
 </body>
 </html>
